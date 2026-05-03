@@ -1,0 +1,22 @@
+# MATLAB / Simulink artifacts
+*.slxc
+*.asv
+*.autosave
+*.m~
+slprj/
+sccprj/
+codegen/
+*.mex*
+
+# Backup / temp
+*~
+*.bak
+*.tmp
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

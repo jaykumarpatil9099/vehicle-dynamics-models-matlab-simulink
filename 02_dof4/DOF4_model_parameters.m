@@ -1,0 +1,21 @@
+%% Constants
+g = 9.81; %Gravity [m/s^2]
+%% Vehicle Parameters
+m = 850; %Mass [kg]
+ms = 785; %Sprung mass [kg]
+musf = 30; %Front unsprung mass [kg]
+musr = 35; %Rear unsprung mass [kg]
+I = 1350; %Pitch inertia [kgm^2]
+L = 3.5; %Wheelbase [m]
+a = 1.8; %CoG front distance [m]
+b = L-a; %CoG rear distance [m]
+%% Suspension parameters
+cfdamper = 2870; %Front damping coefficient [Ns/m]
+crdamper = 2540; %Rear damping coefficient [Ns/m]
+ktyre = 400000; %Tyre vertical stiffness [N/m]
+kfspring = 135000; %Front spring stiffness [N/m]
+krspring = 100000; %Rear spring stiffness [N/m]
+F0f = 3740; %Front spring preload [N]
+F0r = 3960; %Rear spring preload [N]
+z0ftyre = (ms*b/L+musf)*g/ktyre; % Front tyre deflection [m]
+z0rtyre = (ms*a/L+musr)*g/ktyre; %Rear tyre deflection [m]
