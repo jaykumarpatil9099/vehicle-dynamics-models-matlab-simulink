@@ -32,77 +32,23 @@ The full-vehicle model couples sprung-mass body dynamics (heave, pitch, roll), p
 
 ### Studies included
 
-Two pre-computed parametric sweeps are saved in `results/data/`. Plots in `figures/` are generated from these by the scripts under "Reproducing the figures."
-
-**Aero study — longitudinal performance** (`out_original_aero.mat` vs `out_increased_aero.mat`)
-Straight-line acceleration test with two aero configurations. Shows how added downforce / drag affects longitudinal acceleration, top speed reached, and front / rear tyre slip ratios. The headline finding is on the acceleration-vs-speed plot below — drag begins limiting the available longitudinal force at high speed.
+**Aero study — longitudinal performance.** Straight-line acceleration test with two aero configurations. The added downforce / drag affects longitudinal acceleration, top speed reached, and front / rear tyre slip ratios. The headline finding is on the acceleration-vs-speed plot below — drag begins limiting the available longitudinal force at high speed.
 
 ![Aero study — acceleration vs speed](figures/fig_aero_accel_vs_speed.png)
 
-**Vehicle comparison — handling response** (`out_roadcar.mat` vs `out_formulacar.mat`)
-Handling-domain manoeuvre with two parameter sets — road car (1650 kg, 2.8 m wheelbase, no downforce) vs formula-class (850 kg, 3.5 m wheelbase, ~1.0 downforce). Logged channels: steering angle, yaw rate, lateral acceleration, side-slip, X/Y trajectory.
+**Vehicle comparison — handling response.** Handling-domain manoeuvre with two parameter sets — road car (1650 kg, 2.8 m wheelbase, no downforce) vs formula-class (850 kg, 3.5 m wheelbase, ~1.0 downforce). Channels analysed: steering angle, yaw rate, lateral acceleration, side-slip, X/Y trajectory.
 
 ![Vehicle comparison — yaw rate](figures/fig_vehicle_yawrate.png)
 
 ## Frequency-domain analysis
 
-`shared/fft_VD.m` is a reusable FFT helper with automatic zero-padding to the next power of two. The included `figures/plot_fft_modes.m` demonstrates it on yaw rate and lateral acceleration from the handling study, identifying handling-domain natural frequencies.
-
-To produce the classical body-mode (1–3 Hz) and wheel-hop (10–18 Hz) spectra, log vertical signals (`sprung_z`, `unsprung_z`) from one of the shaker-rig models (`03_dof7_shaker/`, `04_dof10_shaker/`) and point the same FFT helper at those signals.
+A reusable FFT helper with automatic zero-padding to the next power of two, applied to yaw rate and lateral acceleration from the handling study to identify handling-domain natural frequencies. The same helper applies to vertical signals from the shaker-rig models for classical body-mode (1–3 Hz) and wheel-hop (10–18 Hz) spectra.
 
 ## Pacejka tyre library
 
 Lateral, longitudinal, and combined-slip implementations of the Magic Formula. Coefficients (`B`, `C`, `E`, peak value) exposed as parameters so the same blocks can be re-tuned for different tyre types — formula slick, road tyre, etc. The 14-DoF and bicycle models both consume them. A standalone extraction is planned as part of the v06 extension to the [GT3 Lap Time Simulator](https://github.com/jaykumarpatil9099/gt3-lap-time-simulator), where the simplified `μ(Fz)` surrogate currently used for QSS will be replaced with this slip-curve model.
 
 ![Pacejka — front vs rear axle](figures/fig_pacejka_lateral_axle_comparison.png)
-
-## Reproducing the figures
-
-There are two paths depending on whether you want to re-run the simulations or just regenerate plots from the saved data.
-
-**To regenerate plots from the saved `.mat` files:**
-
-```matlab
-addpath(genpath('shared'))
-cd figures
-plot_aero_comparison       % overlays original vs increased aero
-plot_vehicle_comparison    % overlays road-car vs formula-car runs
-plot_pacejka_curves        % analytical front-vs-rear Pacejka + load family
-plot_fft_modes             % FFT for body modes and wheel-hop
-```
-
-**To re-run a model from scratch:**
-
-1. Open the model `.slx` in MATLAB / Simulink (built and tested in R2024a)
-2. Run the matching `*_parameters.m` script in the same folder to populate the workspace
-3. `addpath(genpath('shared'))` so `fft_VD.m` is reachable
-4. Run the simulation; built-in scopes plot ride/handling responses live, and signal logging populates the workspace `out` object
-
-`figures/INSTRUCTIONS.md` walks through every plot the README references and what to adjust if a logged-signal name in your model differs from the script defaults.
-
-## File map
-
-```
-vehicle-dynamics-models-matlab-simulink/
-├── README.md                  # this file
-├── 01_quarter_car/            # Quarter_car_model.slx + _parameters.m
-├── 02_dof4/                   # DOF4_model.slx + _parameters.m
-├── 03_dof7_shaker/            # Suspension_shaker_rig_model.slx + _parameters.m
-├── 04_dof10_shaker/           # DOF10_Suspension_shaker_rig_model.slx + _parameters.m
-├── 05_dof14_full_vehicle/     # Complete_vehicle_simulation_dof14_model.slx + _parameters.m
-├── 06_bicycle/                # Bicycle_model.slx + _parameters_formula.m
-├── 07_longitudinal/           # Driving_dynamics_model.slx, Braking_dynamics_model.slx + _parameters.m
-├── 08_pacejka_tyres/          # Pacejka tyre models (lateral, longitudinal, combined)
-├── shared/                    # fft_VD.m, get_signal.m (common helpers)
-├── results/
-│   └── data/                  # .mat output files from parametric studies
-└── figures/                   # plotting scripts + generated PNGs
-    ├── INSTRUCTIONS.md
-    ├── plot_aero_comparison.m
-    ├── plot_vehicle_comparison.m
-    ├── plot_pacejka_curves.m
-    └── plot_fft_modes.m
-```
 
 ## Methodological notes
 
