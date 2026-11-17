@@ -1,5 +1,10 @@
 # Vehicle Dynamics Models — MATLAB & Simulink
 
+[![CI](https://github.com/jaykumarpatil9099/vehicle-dynamics-models-matlab-simulink/actions/workflows/ci.yml/badge.svg)](https://github.com/jaykumarpatil9099/vehicle-dynamics-models-matlab-simulink/actions/workflows/ci.yml)
+[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=jaykumarpatil9099/vehicle-dynamics-models-matlab-simulink)
+![MATLAB](https://img.shields.io/badge/MATLAB%20%2F%20Simulink-R2024b%2B-orange)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 A MATLAB / Simulink toolkit covering the standard vehicle-dynamics modelling progression — from a quarter-car ride model up to a 14-DoF full-vehicle model — built during the M.Sc. Vehicle Engineering programme at Hochschule Trier and used as the simulation backbone for the [GT3 Lap Time Simulator](https://github.com/jaykumarpatil9099/gt3-lap-time-simulator).
 
 ## What's in here
@@ -46,7 +51,7 @@ A reusable FFT helper with automatic zero-padding to the next power of two, appl
 
 ## Pacejka tyre library
 
-Lateral, longitudinal, and combined-slip implementations of the Magic Formula. Coefficients (`B`, `C`, `E`, peak value) exposed as parameters so the same blocks can be re-tuned for different tyre types — formula slick, road tyre, etc. The 14-DoF and bicycle models both consume them. A standalone extraction is planned as part of the v06 extension to the [GT3 Lap Time Simulator](https://github.com/jaykumarpatil9099/gt3-lap-time-simulator), where the simplified `μ(Fz)` surrogate currently used for QSS will be replaced with this slip-curve model.
+Lateral, longitudinal, and combined-slip implementations of the Magic Formula. Coefficients (`B`, `C`, `E`, peak value) exposed as parameters so the same blocks can be re-tuned for different tyre types — formula slick, road tyre, etc. The 14-DoF and bicycle models both consume them, with slip angle in **degrees** (the models convert rad → deg with an Angle Conversion block before the tyre). A standalone, unit-tested extraction with a Python port lives in [pacejka-tyre-model](https://github.com/jaykumarpatil9099/pacejka-tyre-model), and an MF 5.2 version drives the v06 release of the [GT3 Lap Time Simulator](https://github.com/jaykumarpatil9099/gt3-lap-time-simulator).
 
 ![Pacejka — front vs rear axle](figures/fig_pacejka_lateral_axle_comparison.png)
 
@@ -57,9 +62,20 @@ Lateral, longitudinal, and combined-slip implementations of the Magic Formula. C
 - **Shaker rig isolates ride.** The 7-DoF and 10-DoF shaker models drive road inputs into the unsprung masses with no longitudinal/lateral coupling, which is the standard way to validate ride tuning before composing it into the full 14-DoF.
 - **Formula-class default set.** The default 14-DoF parameters describe a low-mass, high-downforce car with stiff race suspension. Switching to a road-car parameter set requires updating mass, inertia, suspension rates, and Pacejka coefficients consistently — the bicycle model's parameter file is one example of a road-car set.
 
+## Quick start
+
+The models are saved in R2024b. Open them in MATLAB/Simulink R2024b or newer, or use *Open in MATLAB Online* above:
+
+```matlab
+buildtool            % static code analysis + smoke tests (every model loads, every parameter file runs)
+buildtool figures    % regenerate the README figures
+```
+
+The same checks run in GitHub Actions on every push (Simulink and Aerospace Blockset are installed on the runner).
+
 ## Background
 
-Built during the Vehicle Dynamics Modelling and Simulation course of the M.Sc. Interdisciplinary Engineering (Automotive) programme at [Hochschule Trier](https://www.hochschule-trier.de/). Course is in progress — final assignment is outstanding and the certificate has not been issued yet. Maintained as the simulation library backing the [GT3 Lap Time Simulator](https://github.com/jaykumarpatil9099/gt3-lap-time-simulator).
+Built during the Vehicle Dynamics Modelling and Simulation course of the M.Sc. Interdisciplinary Engineering (Automotive) programme at [Hochschule Trier](https://www.hochschule-trier.de/). Maintained as the simulation library backing the [GT3 Lap Time Simulator](https://github.com/jaykumarpatil9099/gt3-lap-time-simulator).
 
 ## License
 
