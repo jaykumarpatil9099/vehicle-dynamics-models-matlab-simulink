@@ -21,8 +21,9 @@ addpath('../05_dof14_full_vehicle');
 Complete_vehicle_simulation_dof14_model_parameters;
 
 %% Slip-angle sweep
-alpha_deg = -15:0.1:15;
-alpha     = deg2rad(alpha_deg);
+alpha_deg = -20:0.1:20;
+alpha     = alpha_deg;   % coefficients are fitted with slip angle in DEGREES (the
+                        % Simulink models convert rad -> deg before the tyre block)
 
 %% Vertical loads to evaluate the family at
 Fz_set = [1500 3000 4500 6000];   % N — adjust to your operating window

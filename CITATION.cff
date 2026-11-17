@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "Vehicle dynamics models — MATLAB & Simulink"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Patil
+    given-names: Jaykumar
+repository-code: "https://github.com/jaykumarpatil9099/vehicle-dynamics-models-matlab-simulink"
+license: MIT
+keywords: [vehicle dynamics, simulink, quarter-car, bicycle model, 14-DoF]

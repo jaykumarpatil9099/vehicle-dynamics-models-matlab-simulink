@@ -1,6 +1,6 @@
 # How to generate the README figures
 
-All four scripts run in MATLAB R2024a. Each one writes one or more `fig_*.png` files into this folder, which the README then references.
+All four scripts run in MATLAB R2024b. Each one writes one or more `fig_*.png` files into this folder, which the README then references.
 
 ## One-time setup
 
